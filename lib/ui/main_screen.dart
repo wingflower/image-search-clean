@@ -1,60 +1,91 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_search_clean/data/model/image_item.dart';
+import 'package:image_search_clean/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_clean/ui/widget/image_item_widget.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final searchTextEditingController = TextEditingController();
+
+  final repository = ImageItemRepositoryImpl();
+
+  List<ImageItem> imageItems = [];
+  bool isLoading = false;
+
+  Future<void> searchImage(String query) async {
+    isLoading = true;
+    setState(() {});
+
+    imageItems = await repository.getImageItems(query);
+
+    isLoading = false;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Image Search App',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0.0,
+        title: const Text('Image Search Clean App'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.search),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: 10,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage('https://www.bntnews.co.kr/data/bnt/image/201108/54f595d17593797296c6bdbec72039b9.jpg'),
-                    )
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: searchTextEditingController,
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                      width: 2,
+                      color: Colors.cyan,
+                    ),
                   ),
-                );
-              },
-            ),
-          )
-        ],
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                      width: 2,
+                      color: Colors.cyan,
+                    ),
+                  ),
+                  hintText: 'Search',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      searchImage(searchTextEditingController.text);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
+                        itemCount: imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = imageItems[index];
+                          return ImageItemWidget(imageItem: imageItem);
+                        },
+                      ),
+                    ),
+            ],
+          ),
+        ),
       ),
     );
   }
