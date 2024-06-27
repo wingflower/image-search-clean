@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:image_search_clean/data/model/image_item.dart';
 import 'package:image_search_clean/data/repository/image_item_repository_impl.dart';
 import 'package:image_search_clean/ui/widget/image_item_widget.dart';
+import 'package:image_search_clean/ui/main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,23 +16,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final searchTextEditingController = TextEditingController();
 
-  final repository = ImageItemRepositoryImpl();
-
-  List<ImageItem> imageItems = [];
-  bool isLoading = false;
-
-  Future<void> searchImage(String query) async {
-    isLoading = true;
-    setState(() {});
-
-    imageItems = await repository.getImageItems(query);
-
-    isLoading = false;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Search Clean App'),
@@ -60,13 +49,13 @@ class _MainScreenState extends State<MainScreen> {
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: () {
-                      searchImage(searchTextEditingController.text);
+                      viewModel.searchImage(searchTextEditingController.text);
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              isLoading
+              viewModel.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : Expanded(
                       child: GridView.builder(
@@ -76,9 +65,9 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
-                        itemCount: imageItems.length,
+                        itemCount: viewModel.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = imageItems[index];
+                          final imageItem = viewModel.imageItems[index];
                           return ImageItemWidget(imageItem: imageItem);
                         },
                       ),
