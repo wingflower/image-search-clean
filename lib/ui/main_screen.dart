@@ -49,8 +49,17 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: 'Search',
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
-                    onPressed: () {
-                      viewModel.searchImage(searchTextEditingController.text);
+                    onPressed: () async {
+                      final result = await viewModel
+                          .searchImage(searchTextEditingController.text);
+                      if (result == false) {
+                        const snackBar = SnackBar(
+                          content: Text('Why not?'),
+                        );
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                     },
                   ),
                 ),
@@ -63,8 +72,8 @@ class _MainScreenState extends State<MainScreen> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32,
                         ),
                         itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
