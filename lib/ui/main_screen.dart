@@ -19,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MainViewModel>();
+    final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Search Clean App'),
@@ -55,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              viewModel.isLoading
+              state.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : Expanded(
                       child: GridView.builder(
@@ -65,9 +66,9 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
-                        itemCount: viewModel.imageItems.length,
+                        itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = viewModel.imageItems[index];
+                          final imageItem = state.imageItems[index];
                           return ImageItemWidget(imageItem: imageItem);
                         },
                       ),
