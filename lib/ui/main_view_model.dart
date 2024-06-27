@@ -16,6 +16,9 @@ class MainViewModel extends ChangeNotifier {
   }) : _repository = repository;
 
   Future<bool> searchImage(String query) async {
+    _state = state.copyWith(isLoading: true);
+    notifyListeners();
+
     try {
       final results = (await _repository.getImageItems(query)).take(3).toList();
 
