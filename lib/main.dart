@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:image_search_clean/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_clean/routes.dart';
 import 'package:image_search_clean/di/di_setup.dart';
 
-import 'package:image_search_clean/ui/main_screen.dart';
-import 'package:image_search_clean/ui/main_view_model.dart';
 
 void main() {
   diSetup();
@@ -16,18 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Image Search Clean App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ChangeNotifierProvider(
-        create: (_) => MainViewModel(
-          repository: ImageItemRepositoryImpl(),
-        ),
-        child: const MainScreen(),
-      )
     );
   }
 }
