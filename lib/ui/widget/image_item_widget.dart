@@ -12,6 +12,7 @@ class ImageItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
       child: Image.network(
         imageItem.imageUrl,
         fit: BoxFit.cover,
