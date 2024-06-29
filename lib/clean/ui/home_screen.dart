@@ -59,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () async {
                     final photos = await fetch(_controller.text);
                     _photos = photos;
+                    setState(() {});
                   },
                   icon: const Icon(Icons.search),
                 ),
