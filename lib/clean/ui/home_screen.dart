@@ -48,8 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 suffixIcon: IconButton(
                   onPressed: () async {
                     final photos = await photoProvider.api.fetch(_controller.text);
-                    _photos = photos;
-                    setState(() {});
+                    setState(() {
+                      _photos = photos;
+                    });
                   },
                   icon: const Icon(Icons.search),
                 ),
