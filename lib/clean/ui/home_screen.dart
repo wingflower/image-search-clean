@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_clean/clean/data/photo_provider.dart';
 
+import 'package:image_search_clean/clean/data/photo_provider.dart';
 import 'package:image_search_clean/clean/model/photo.dart';
 import 'package:image_search_clean/clean/ui/widget/photo_widget.dart';
 
@@ -22,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final photoProvider = PhotoProvider.of(context);
+    final viewModel = PhotoProvider.of(context).viewModel;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    photoProvider.fetch(_controller.text);
+                    viewModel.fetch(_controller.text);
                   },
                   icon: const Icon(Icons.search),
                 ),
@@ -53,14 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           StreamBuilder<List<Photo>>(
-            stream: photoProvider.photoStream,
+            stream: viewModel.photoStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const CircularProgressIndicator();
               }
-
               final photos = snapshot.data!;
-
               return Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.all(16.0),
