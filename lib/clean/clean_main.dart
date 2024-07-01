@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_clean/clean/data/api.dart';
+import 'package:image_search_clean/clean/data/photo_provider.dart';
 
 import 'package:image_search_clean/clean/ui/home_screen.dart';
 
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         appBarTheme: const AppBarTheme(centerTitle: true),
       ),
-      home: HomeScreen(api: PixabayApi()),
+      home: PhotoProvider(
+        api: PixabayApi(),
+        child: const HomeScreen(),
+      ),
     );
   }
 }
