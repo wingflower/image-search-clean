@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         appBarTheme: const AppBarTheme(centerTitle: true),
       ),
-      home: Provider(
+      home: ChangeNotifierProvider(
         create: (_) => HomeViewModel(PixabayApi()),
         child: const HomeScreen(),
       ),
