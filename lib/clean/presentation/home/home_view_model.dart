@@ -13,6 +13,10 @@ class HomeViewModel with ChangeNotifier {
 
   UnmodifiableListView<Photo> get photos => UnmodifiableListView(_photos);
 
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
   final _eventController = StreamController<HomeUiEvent>();
 
   Stream<HomeUiEvent> get eventController => _eventController.stream;
@@ -20,7 +24,11 @@ class HomeViewModel with ChangeNotifier {
   HomeViewModel(this.repository);
 
   Future<void> fetch(String query) async {
+    _isLoading = true;
+    notifyListeners();
+
     final Result<List<Photo>> result = await repository.fetch(query);
+
     result.when(
       success: (photos) {
         _photos = photos;
@@ -30,5 +38,7 @@ class HomeViewModel with ChangeNotifier {
         _eventController.add(HomeUiEvent.showSnackBar(message));
       },
     );
+    _isLoading = false;
+    notifyListeners();
   }
 }
