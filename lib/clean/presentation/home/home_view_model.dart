@@ -10,7 +10,7 @@ import 'package:image_search_clean/clean/presentation/home/home_ui_event.dart';
 class HomeViewModel with ChangeNotifier {
   final PhotoApiRepository repository;
 
-  HomeState _state = HomeState([], false);
+  HomeState _state = const HomeState();
 
   HomeState get state => _state;
 
@@ -26,21 +26,21 @@ class HomeViewModel with ChangeNotifier {
   HomeViewModel(this.repository);
 
   Future<void> fetch(String query) async {
-    state.isLoading = true;
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     final Result<List<Photo>> result = await repository.fetch(query);
 
     result.when(
       success: (photos) {
-        state.photos = photos;
+        _state = state.copyWith(photos: photos);
         notifyListeners();
       },
       error: (message) {
         _eventController.add(HomeUiEvent.showSnackBar(message));
       },
     );
-    state.isLoading = false;
+    _state = state.copyWith(isLoading: false);
     notifyListeners();
   }
 }
