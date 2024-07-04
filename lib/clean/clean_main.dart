@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_clean/clean/data/api.dart';
-import 'package:image_search_clean/clean/data/photo_provider.dart';
 
+import 'package:image_search_clean/clean/data/pixabay_api.dart';
 import 'package:image_search_clean/clean/ui/home_screen.dart';
+import 'package:image_search_clean/clean/ui/home_view_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +21,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         appBarTheme: const AppBarTheme(centerTitle: true),
       ),
-      home: PhotoProvider(
-        api: PixabayApi(),
+      home: ChangeNotifierProvider(
+        create: (_) => HomeViewModel(PixabayApi()),
         child: const HomeScreen(),
       ),
     );
