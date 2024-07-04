@@ -1,24 +1,24 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_search_clean/clean/data/data_source/pixabay_api.dart';
+import 'package:image_search_clean/clean/data/repository/pixabay_api_repository_impl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:image_search_clean/clean/data/pixabay_api.dart';
 import 'package:mockito/mockito.dart';
-
 import 'pixabay_api_test.mocks.dart';
+
 
 @GenerateMocks([http.Client])
 void main() {
   test('PixabayApi Test', () async {
-    final api = PixabayApi();
     final client = MockClient();
+    final api = PixabayApiRepositoryImpl(PixabayApi(client));
     const query = 'apple';
 
     when(client.get(Uri.parse(
             '${PixabayApi.baseUrl}?key=${PixabayApi.key}&q=$query&image_type=photo')))
         .thenAnswer((_) async => http.Response(fakeJsonBody, 200));
 
-    final result = await api.fetch(query, client: client);
+    final result = await api.fetch(query);
 
     expect(result.length, 20);
     expect(result.first.id, 2788599);
