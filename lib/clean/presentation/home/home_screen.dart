@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final viewModel = context.watch<HomeViewModel>();
     // final viewModel = Provider.of<HomeViewModel>(context);
     // final viewModel = PhotoProvider.of(context).viewModel;
+    final state = viewModel.state;
 
     return Scaffold(
       appBar: AppBar(
@@ -73,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          viewModel.isLoading
+          state.isLoading
               ? const CircularProgressIndicator()
               : Expanded(
                   child: GridView.builder(
                     padding: const EdgeInsets.all(16.0),
-                    itemCount: viewModel.photos.length,
+                    itemCount: state.photos.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisSpacing: 16.0,
                     ),
                     itemBuilder: (context, index) {
-                      final photo = viewModel.photos[index];
+                      final photo = state.photos[index];
                       return PhotoWidget(
                         photo: photo,
                       );
