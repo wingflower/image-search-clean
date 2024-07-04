@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_search_clean/clean/data/data_source/result.dart';
+import 'package:image_search_clean/clean/domain/model/photo.dart';
+import 'package:image_search_clean/clean/domain/repository/photo_api_repository.dart';
+import 'package:image_search_clean/clean/presentation/home/home_view_model.dart';
 
-import 'package:image_search_clean/clean/data/photo_api_repository.dart';
-import 'package:image_search_clean/clean/model/photo.dart';
-import 'package:image_search_clean/clean/ui/home_view_model.dart';
 
 void main() {
   test('Stream Test', () async {
@@ -12,16 +13,16 @@ void main() {
 
     final List<Photo> result = fakeJson.map((e) => Photo.fromJson(e)).toList();
 
-    expect(viewModel.photos, result);
+    expect(viewModel.state.photos, result);
   });
 }
 
 class FakePhotoApiRepository extends PhotoApiRepository {
   @override
-  Future<List<Photo>> fetch(String query) async {
+  Future<Result<List<Photo>>> fetch(String query) async {
     Future.delayed(const Duration(milliseconds: 500));
 
-    return fakeJson.map((e) => Photo.fromJson(e)).toList();
+    return Result.success(fakeJson.map((e) => Photo.fromJson(e)).toList());
   }
 }
 
