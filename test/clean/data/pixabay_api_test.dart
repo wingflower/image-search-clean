@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_search_clean/clean/data/data_source/pixabay_api.dart';
 import 'package:image_search_clean/clean/data/data_source/result.dart';
-import 'package:image_search_clean/clean/data/repository/pixabay_api_repository_impl.dart';
+import 'package:image_search_clean/clean/data/repository/photo_api_repository_impl.dart';
 import 'package:image_search_clean/clean/domain/model/photo.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +13,7 @@ import 'pixabay_api_test.mocks.dart';
 void main() {
   test('PixabayApi Test', () async {
     final client = MockClient();
-    final api = PixabayApiRepositoryImpl(PixabayApi(client));
+    final api = PhotoApiRepositoryImpl(PixabayApi(client));
     const query = 'apple';
 
     when(client.get(Uri.parse(

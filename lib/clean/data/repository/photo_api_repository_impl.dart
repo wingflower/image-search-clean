@@ -3,10 +3,10 @@ import 'package:image_search_clean/clean/data/data_source/result.dart';
 import 'package:image_search_clean/clean/domain/repository/photo_api_repository.dart';
 import 'package:image_search_clean/clean/domain/model/photo.dart';
 
-class PixabayApiRepositoryImpl implements PhotoApiRepository {
+class PhotoApiRepositoryImpl implements PhotoApiRepository {
   PixabayApi api;
 
-  PixabayApiRepositoryImpl(this.api);
+  PhotoApiRepositoryImpl(this.api);
 
   @override
   Future<Result<List<Photo>>> fetch(String query) async {
