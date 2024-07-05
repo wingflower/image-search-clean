@@ -2,12 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_search_clean/clean/data/data_source/result.dart';
 import 'package:image_search_clean/clean/domain/model/photo.dart';
 import 'package:image_search_clean/clean/domain/repository/photo_api_repository.dart';
+import 'package:image_search_clean/clean/domain/use_case/get_photos_use_case.dart';
 import 'package:image_search_clean/clean/presentation/home/home_view_model.dart';
 
 
 void main() {
   test('Stream Test', () async {
-    final viewModel = HomeViewModel(FakePhotoApiRepository());
+    final viewModel = HomeViewModel(GetPhotosUseCase(FakePhotoApiRepository()));
 
     await viewModel.fetch('apple');
 

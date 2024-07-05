@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_clean/clean/domain/use_case/get_photos_use_case.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_search_clean/clean/data/data_source/pixabay_api.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(centerTitle: true),
       ),
       home: ChangeNotifierProvider(
-        create: (_) => HomeViewModel(PixabayApiRepositoryImpl(PixabayApi(http.Client()))),
+        create: (_) => HomeViewModel(GetPhotosUseCase(PixabayApiRepositoryImpl(PixabayApi(http.Client())))),
         child: const HomeScreen(),
       ),
     );
